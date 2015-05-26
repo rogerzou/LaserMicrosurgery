@@ -91,11 +91,15 @@ public class Mirror implements SerialPortEventListener {
 		IJ.wait(200);
 	}
 
+	/**
+	 * Sends message to mirror
+	 * @param msg message to be written
+	 */
     void writeMirror(String msg) {
-        boolean echo = true;
 		try {
-			if (echo) IJ.log("\tSend: \t"+msg);
-			mirrorPort.writeBytes(msg.getBytes());
+			IJ.log("\tSend: \t" + msg);
+			msg += "\r";	// add carriage return to indicate termination of command
+			mirrorPort.writeString(msg);
 		} catch (SerialPortException e) {
 			String error = "Mirror.openMirrorPort() failed.";
 			IJ.log(error);
@@ -104,8 +108,11 @@ public class Mirror implements SerialPortEventListener {
 		}
 	}
 
-	// Uses an idle loop to wait until the microcontroller responds, the ESC key is pressed, or the timeout is reached
-	String waitForMirrorReply() {
+	/**
+	 * Uses an idle loop to wait until the microcontroller responds, or the timeout is reached.
+	 * @return the message from the device as a string, or "None received" if timeout without reply.
+	 */
+    String waitForMirrorReply() {
 		startTime = System.currentTimeMillis();
 		String reply;
 		while (true) {
@@ -115,11 +122,11 @@ public class Mirror implements SerialPortEventListener {
 			if (elapsedTime >= timeOut)	{
 				IJ.beep();
 				IJ.log("Program has reached timeout without Reply");
-				reply="None received";
+				reply = "None received";
 				break;
 			}
 			if (replyReceived) {
-				reply=returnedString;
+				reply = returnedString;
 				break;
 			}
 		}
@@ -151,10 +158,9 @@ public class Mirror implements SerialPortEventListener {
 	}
 
     public void serialEvent(SerialPortEvent event) {
-        if (event.isRXCHAR() && event.getEventValue() > 0){ // If data is available and has bits...
+        if (event.isRXCHAR() && event.getEventValue() > 0) { // If data is available and has bits...
             try {
-                byte buffer[] = mirrorPort.readBytes(20);
-                returnedString = new String(buffer);
+                returnedString = mirrorPort.readString();
                 replyReceived = true;
             } catch (SerialPortException ex) {
 				String error = "Mirror.serialEvent() failed.";

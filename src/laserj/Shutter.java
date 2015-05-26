@@ -62,7 +62,7 @@ public class Shutter {
 
     void writeShutter(String msg) {
         try {
-			shutterPort.writeBytes(msg.getBytes());
+			shutterPort.writeString(msg);
 		} catch (SerialPortException e) {
 			String error = "Shutter.writeShutter() failed.";
 			IJ.log(error);
