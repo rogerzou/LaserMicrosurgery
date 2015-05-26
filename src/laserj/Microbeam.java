@@ -22,7 +22,7 @@ import ij.process.*;
 public class Microbeam {
 
 	/** SETTINGS TO CONFIGURE **/
-    public static final String CONFIG_FILENAME = "plugins/LaserMicrosurgery/doc/Microbeam.txt";
+    public static final String CONFIG_FILENAME = "plugins/LaserMicrosurgeryEXE/Microbeam.txt";
     private static final long timeOut = 30000L;	// 30 second delay
     
     private String mr_port, sh_port;
