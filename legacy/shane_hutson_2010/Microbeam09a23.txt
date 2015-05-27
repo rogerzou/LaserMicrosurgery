@@ -1,0 +1,7 @@
+COM4		Serial Port - Mirror Scanner
+COM3		Serial Port - Shutter
+0.625		Conversion: microns per pixel
+1.7137960582690659E-4	Conversion: mm travel(axis ONE) per pix(X)
+0.0033541437140408863	Conversion: mm travel(axis ONE) per pix(Y)
+0.002913453299057412	Conversion: mm travel(axis TWO) per pix(X)
+-1.2241400416207614E-4	Conversion: mm travel(axis TWO) per pix(Y)
