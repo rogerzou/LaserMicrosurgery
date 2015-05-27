@@ -19,12 +19,13 @@ import ij.*;
 import ij.process.*;
 import ij.gui.*;
 import ij.plugin.filter.*;
-
 import laserj.*;
 
 public class Center_Microbeam implements PlugInFilter {
 
     public int setup(String arg, ImagePlus imp) {
+		IJ.log("\n\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\nCENTER_MICROBEAM"
+				+ "\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n\n");
         return DOES_ALL + NO_CHANGES;
     }
 

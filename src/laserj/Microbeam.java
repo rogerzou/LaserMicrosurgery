@@ -15,6 +15,7 @@ package laserj;
 import java.util.*;
 import java.io.*;
 
+import helpers.FileSearch;
 import ij.*;
 import ij.gui.*;
 import ij.process.*;
@@ -22,7 +23,7 @@ import ij.process.*;
 public class Microbeam {
 
 	/** SETTINGS TO CONFIGURE **/
-    public static final String CONFIG_FILENAME = "plugins/LaserMicrosurgeryEXE/Microbeam.txt";
+    public static final String CONFIG_FILENAME = "Microbeam.txt";
     private static final long timeOut = 30000L;	// 30 second delay
     
     private String mr_port, sh_port;
@@ -31,25 +32,25 @@ public class Microbeam {
     private transient Shutter shutter;
     private boolean setupOK;
 
-	// Initializes using a dialog box
-    public Microbeam() {
-        if (this.dialogConfig()) {
-            this.printConfig();
-            this.shutter = new Shutter(this.sh_port);
-            this.mirror = new Mirror(this.mr_port, Microbeam.timeOut);
-            IJ.log("\nMICROBEAM INITIALIZATION COMPLETE\n\n");
-        } else {
-            IJ.log("\nMICROBEAM INITIALIZATION CANCELED\n\n");
-            setupOK = false;
-        }
-    }
-
-	// Initializes using a text file
-    public Microbeam(String textfile) {
+	// Initializes using the name of Microbeam config file.
+    public Microbeam(String configfilename) {
 		setupOK = true;
+		
+		// Search for microbeam config file inside current directory
+    	File curdir = new File(System.getProperty("user.dir"));
+		List<String> results = FileSearch.searchDirectory(curdir, configfilename);
+		String configfilepath;
+		if (results.size() > 0) {
+			configfilepath = results.get(0);
+		} else {
+			setupOK = false;
+			throw new IllegalArgumentException("Microbeam config file not found.");
+		}
+
+		// Load the file into file reader to parse
 		BufferedReader config;
 		try {
-			config = new BufferedReader(new FileReader(textfile));
+			config = new BufferedReader(new FileReader(configfilepath));
 		} catch (FileNotFoundException e) {
 			setupOK = false;
 			throw new IllegalArgumentException("Microbeam config file not found.");
@@ -70,6 +71,8 @@ public class Microbeam {
 			setupOK = false;
 			throw new IllegalArgumentException("Microbeam config file is not formatted properly.");
 		}
+		
+		// Initialize shutter and mirror
 		shutter = new Shutter(sh_port);
 		mirror = new Mirror(mr_port, timeOut);
     }

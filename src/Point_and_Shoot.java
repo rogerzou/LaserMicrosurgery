@@ -25,12 +25,10 @@ public class Point_and_Shoot implements PlugInFilter {
 
 	private ImagePlus imp;
 	private ImageWindow win;
-	
-	private int npts;
-	private double[] x;
-	private double[] y;
 
 	public int setup(String arg, ImagePlus imp) {
+		IJ.log("\n\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\nPOINT_AND_SHOOT"
+				+ "\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n\n");
 		this.imp = imp;
 		if (imp != null) {
 			win = imp.getWindow();
@@ -40,27 +38,28 @@ public class Point_and_Shoot implements PlugInFilter {
 	}
 
     public void run(ImageProcessor ip) {
-		IJ.setColumnHeadings("");
+		int npts;
+		double[] x, y;
 		
 		// Obtains the coordinates of the points from the Results window
 		TextPanel resultsWindow = IJ.getTextPanel();
-		try {
-			npts = resultsWindow.getLineCount();
-			if (npts <= 0) throw new IllegalArgumentException();
-			x = new double[npts];
-			y = new double[npts];
-			for (int i = 0; i < npts; i++) {
-				StringTokenizer line = new StringTokenizer(resultsWindow.getLine(i), "\t");
-				line.nextToken();
-				x[i] = Double.parseDouble(line.nextToken());
-				y[i] = Double.parseDouble(line.nextToken());
-			}
-		} catch (RuntimeException e) {
-			IJ.showMessage("Invalid point selection",
-			"Use the crosshair tool to mark all desired points of ablation before executing Point and Shoot.\n" +
-			"This plugin will ablate all points listed in the Results window.\n" +
-			"Clear the window beforehand if necessary.");
+		npts = resultsWindow.getLineCount();
+		if (npts <= 0) {
+			IJ.log("ERROR: no point coordinates found.");
+			IJ.log("INSTRUCTIONS: Use the crosshair tool to mark all desired points of ablation"
+					+ "before executing Point and Shoot.\n This plugin will ablate "
+					+ "all points listed in the Results window.\n Clear the window "
+					+ "beforehand if necessary.");
+			IJ.log("\nDONE\n");
 			return;
+		}
+		x = new double[npts];
+		y = new double[npts];
+		for (int i = 0; i < npts; i++) {
+			StringTokenizer line = new StringTokenizer(resultsWindow.getLine(i), "\t");
+			line.nextToken();
+			x[i] = Double.parseDouble(line.nextToken());
+			y[i] = Double.parseDouble(line.nextToken());
 		}
 
 		// Displays a dialog box to allow the user to configure the experimental parameters

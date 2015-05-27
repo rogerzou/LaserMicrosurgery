@@ -13,7 +13,9 @@
 import ij.*;
 import ij.process.*;
 import ij.gui.*;
+
 import java.awt.*;
+
 import ij.plugin.filter.*;
 import laserj.*;
 
@@ -26,6 +28,8 @@ public class Cut_A_Curve implements PlugInFilter {
 	private double[] ypath;
 	
 	public int setup(String arg, ImagePlus imp) {
+		IJ.log("\n\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\nCUT_A_CURVE"
+				+ "\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n\n");
 		this.imp = imp;
 		if (imp != null) {
 			win = imp.getWindow();

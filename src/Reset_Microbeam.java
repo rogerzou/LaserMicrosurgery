@@ -16,7 +16,9 @@ public class Reset_Microbeam implements PlugIn {
 
 	public void run(String arg) {
 		IJ.setColumnHeadings("");
-
+		IJ.log("\n\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\nRESET_MICROBEAM"
+				+ "\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n\n\n");
+		
 		//Initializes the microbeam
 		Microbeam microbeam = new Microbeam(Microbeam.CONFIG_FILENAME);
 		if (!microbeam.isSetupOK())
