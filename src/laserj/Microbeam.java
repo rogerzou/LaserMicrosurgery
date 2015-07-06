@@ -110,6 +110,10 @@ public class Microbeam {
         mirror.defineHome();
     }
 
+    public void setNewMirrorHome(double x, double y) {
+    	mirror.setNewHome(x, y);
+    }
+    
     public void openShutter() {
         shutter.open();
         IJ.log("OPEN SHUTTER");

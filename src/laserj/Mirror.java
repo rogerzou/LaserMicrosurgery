@@ -78,6 +78,11 @@ public class Mirror implements SerialPortEventListener {
 		IJ.wait(500);
 	}
 
+	void setNewHome(double x, double y) {
+		writeMirror("1DH" + IJ.d2s(x,6) + "'" + "2DH" + IJ.d2s(y,6));
+		IJ.wait(500);
+	}
+	
 	void initializeMirror() {
 
 		IJ.log("Initializing Mirrors");
